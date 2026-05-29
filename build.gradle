@@ -1,0 +1,65 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.gradleup.shadow' version '9.4.1'
+}
+
+group = 'me.kubaw208'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven { // LiteCommands repository
+        url "https://repo.panda-lang.org/releases"
+    }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.46'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.46'
+
+    implementation 'de.exlll:configlib-paper:4.8.1'
+    implementation 'de.exlll:configlib-yaml:4.8.1'
+
+    implementation 'io.github.classgraph:classgraph:4.8.179'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    withSourcesJar()
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+publishing {
+    publications {
+        gpr(MavenPublication) {
+            artifactId = "Configify"
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:processing"
+}
