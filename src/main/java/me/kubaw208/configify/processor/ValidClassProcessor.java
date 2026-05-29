@@ -1,4 +1,4 @@
-package me.kubaw208.configify;
+package me.kubaw208.configify.processor;
 
 import com.sun.source.tree.*;
 import com.sun.source.util.*;
