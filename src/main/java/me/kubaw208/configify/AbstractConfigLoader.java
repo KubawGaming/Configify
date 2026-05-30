@@ -70,10 +70,6 @@ public abstract class AbstractConfigLoader {
     }
 
     protected <T extends AbstractConfig> T loadConfig(Class<T> clazz, String fileName, File path) {
-        return loadConfig(clazz, fileName, path, true);
-    }
-
-    protected <T extends AbstractConfig> T loadConfig(Class<T> clazz, String fileName, File path, boolean defaultPath) {
         var configurationStore = new YamlConfigurationStore<>(clazz, properties);
         var config = configurationStore.update(new File(path, fileName).toPath());
 
@@ -85,9 +81,6 @@ public abstract class AbstractConfigLoader {
 
         configs.put(clazz, config);
         stores.put(clazz, configurationStore);
-
-        if(defaultPath)
-            defaultPaths.put(clazz, path.toPath());
 
         return config;
     }
@@ -107,6 +100,7 @@ public abstract class AbstractConfigLoader {
         return (T) configsData.get(clazz);
     }
 
+    @CheckClass(AutoRegisterConfig.class)
     public <T extends SingletonConfig> YamlConfigurationStore<T> getStore(Class<T> clazz) {
         var defaultPath = defaultPaths.getOrDefault(clazz, plugin.getDataFolder().toPath());
         return getStore(clazz, defaultPath);
@@ -121,6 +115,7 @@ public abstract class AbstractConfigLoader {
         return (YamlConfigurationStore<T>) storesData.get(clazz);
     }
 
+    @CheckClass(AutoRegisterConfig.class)
     public <T extends SingletonConfig> void saveConfig(Class<T> clazz) {
         var defaultPath = defaultPaths.getOrDefault(clazz, plugin.getDataFolder().toPath());
         saveConfig(clazz, defaultPath);
@@ -138,6 +133,7 @@ public abstract class AbstractConfigLoader {
         }
     }
 
+    @CheckClass(AutoRegisterConfig.class)
     public <T extends SingletonConfig> boolean updateConfig(Class<T> clazz) {
         var defaultPath = defaultPaths.getOrDefault(clazz, plugin.getDataFolder().toPath());
         return updateConfig(clazz, defaultPath);
@@ -181,7 +177,6 @@ public abstract class AbstractConfigLoader {
                     AutoRegisterConfig annotation = clazz.getAnnotation(AutoRegisterConfig.class);
                     String fileName = annotation.fileName();
                     String path = annotation.path();
-                    boolean defaultPath = annotation.defaultPath();
                     Class<? extends AbstractConfig> configClass = (Class<? extends AbstractConfig>) clazz;
 
                     if(path == null || path.trim().isEmpty()) {
@@ -191,9 +186,6 @@ public abstract class AbstractConfigLoader {
 
                         if(!customPath.exists())
                             customPath.mkdirs();
-
-                        if(defaultPath)
-                            defaultPaths.put((Class<? extends AbstractConfig>) clazz, customPath.toPath());
 
                         loadConfig(configClass, fileName, customPath);
                     }
