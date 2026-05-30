@@ -17,8 +17,6 @@ public class ValidClassProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "ValidClassProcessor started");
-
         Trees trees = Trees.instance(processingEnv);
 
         for(Element root : roundEnv.getRootElements()) {
@@ -64,8 +62,7 @@ public class ValidClassProcessor extends AbstractProcessor {
                     if(!hasAnnotation(typeElem, requiredAnnotationElement)) {
                         processingEnv.getMessager().printMessage(
                                 Diagnostic.Kind.ERROR,
-                                "Class " + typeElem.getQualifiedName()
-                                        + " is missing @" + requiredAnnotationElement.getSimpleName()
+                                "Class " + typeElem.getQualifiedName() + " is missing @" + requiredAnnotationElement.getSimpleName()
                         );
                     }
 
