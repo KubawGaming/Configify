@@ -18,7 +18,7 @@ public abstract class AbstractConfig {
      * @param world The name of the world.
      * @return The {@link World} object, or {@code null} if the world does not exist.
      */
-    public World getWorld(String world) {
+    protected World getWorld(String world) {
         return Bukkit.getWorld(world);
     }
 
