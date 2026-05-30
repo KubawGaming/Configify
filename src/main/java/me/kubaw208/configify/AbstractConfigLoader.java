@@ -29,7 +29,7 @@ import java.util.Map;
  * To use this class, you should:
  * <ol>
  *     <li>Extend it in your own loader class</li>
- *     <li>Implement the {@link #registerSerializers()} method to register custom serializers</li>
+ *     <li>Implement the {@link #configureProperties} method to configure additional properties</li>
  *     <li>Create configuration classes extending {@link AbstractConfig} or {@link SingletonConfig}</li>
  *     <li>Optionally use the {@link AutoRegisterConfig} annotation and call {@link #loadAutoRegisteredConfigs()} to load them</li>
  * </ol>
@@ -44,7 +44,6 @@ public abstract class AbstractConfigLoader {
 
     protected final JavaPlugin plugin;
 
-    private final Map<Class<?>, Serializer> customSerializers = new HashMap<>();
     private final HashMap<Path, HashMap<Class<? extends AbstractConfig>, YamlConfigurationStore<? extends AbstractConfig>>> stores = new HashMap<>();
     private final HashMap<Path, HashMap<Class<? extends AbstractConfig>, AbstractConfig>> configs = new HashMap<>();
     private final HashMap<Class<? extends AbstractConfig>, Path> defaultPaths = new HashMap<>();
@@ -61,38 +60,21 @@ public abstract class AbstractConfigLoader {
     }
 
     /**
-     * Registers custom serializers for data types not supported by default by ConfigLib.
+     * Configures additional properties for the {@link YamlConfigurationProperties} builder.
+     * This is the place to register custom serializers or change other configuration settings.
+     *
+     * @param builder The configuration properties builder.
      */
-    protected abstract void registerSerializers();
+    protected abstract void configureProperties(ConfigurationProperties.Builder<?> builder);
 
     /**
      * Builds configuration properties, including registering custom serializers.
      */
     private void buildProperties() {
-        var properties = ConfigLib.BUKKIT_DEFAULT_PROPERTIES
-                .toBuilder();
+        var properties = ConfigLib.BUKKIT_DEFAULT_PROPERTIES.toBuilder();
 
-        registerSerializers();
-
-        for(var clazz : customSerializers.keySet()) {
-            var serializer =  customSerializers.get(clazz);
-
-            properties.addSerializer(clazz, serializer);
-        }
-
+        configureProperties(properties);
         this.properties = properties.build();
-    }
-
-    /**
-     * Adds a custom serializer to the list of serializers to be registered.
-     * Should be called inside {@link #registerSerializers()}.
-     *
-     * @param type       The data type class.
-     * @param serializer The serializer instance.
-     * @param <T>        The data type.
-     */
-    protected final <T> void addSerializer(Class<T> type, Serializer<T, ?> serializer) {
-        customSerializers.put(type, serializer);
     }
 
     /**
