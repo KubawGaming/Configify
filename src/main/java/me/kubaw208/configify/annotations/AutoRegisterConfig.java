@@ -11,6 +11,4 @@ public @interface AutoRegisterConfig {
 
     String path() default "";
 
-    boolean defaultPath() default true;
-
 }
