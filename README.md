@@ -1,4 +1,7 @@
 # Configify
+[![Version](https://jitpack.io/v/KubawGaming/Configify.svg)](https://jitpack.io/#KubawGaming/Configify)
+[![Java](https://img.shields.io/badge/Java-17+-orange.svg)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+[![Paper](https://img.shields.io/badge/Paper-1.17+-green.svg)](https://papermc.io/)
 
 Minimalist Spigot/Paper configuration library powered by ConfigLib.
 
@@ -11,7 +14,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.kubaw208:Configify:{VERSION}'
+    implementation 'com.github.KubawGaming:Configify:{VERSION}'
+    annotationProcessor 'com.github.KubawGaming:Configify:{VERSION}'
 }
 ```
 
@@ -26,11 +30,30 @@ dependencies {
 
 <dependencies>
     <dependency>
-        <groupId>com.github.kubaw208</groupId>
+        <groupId>com.github.KubawGaming</groupId>
         <artifactId>Configify</artifactId>
         <version>{VERSION}</version>
     </dependency>
 </dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>com.github.KubawGaming</groupId>
+                        <artifactId>Configify</artifactId>
+                        <version>{VERSION}</version>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 ```
 
 ## Usage
