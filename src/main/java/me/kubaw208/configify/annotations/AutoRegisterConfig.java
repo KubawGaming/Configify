@@ -1,7 +1,7 @@
 package me.kubaw208.configify.annotations;
 
-import me.kubaw208.configify.AbstractConfigLoader;
-import me.kubaw208.configify.SingletonConfig;
+import me.kubaw208.configify.configs.AbstractConfigLoader;
+import me.kubaw208.configify.configs.SingletonConfig;
 
 import java.lang.annotation.*;
 

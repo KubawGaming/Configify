@@ -1,4 +1,4 @@
-package me.kubaw208.configify;
+package me.kubaw208.configify.configs;
 
 import me.kubaw208.configify.annotations.AutoRegisterConfig;
 
