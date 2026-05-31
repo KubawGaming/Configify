@@ -131,6 +131,11 @@ public class MyConfigLoader extends AbstractConfigLoader {
     public <T extends AbstractConfig> T getRoundConfig(Class<T> clazz, String roundId) {
         return getConfig(clazz, new File(plugin.getDataFolder(), "rounds/" + roundId).toPath());
     }
+
+    // Another example, make save round configs without specifying the path (just the roundId)
+    public void saveRoundConfig(Class<? extends AbstractConfig> clazz, String roundId) {
+        saveConfig(clazz, new File(plugin.getDataFolder(), "rounds/" + roundId).toPath());
+    }
     
 }
 ```
@@ -157,10 +162,10 @@ public class MyPlugin extends JavaPlugin {
 // Access singleton
 MyConfig config = configLoader.getConfig(MyConfig.class);
 
-// Access specific instance of AbstractConfig
-RoundConfig round1 = configLoader.getRoundConfig("round1");
+// Access specific instance of AbstractConfig by using our utility method in configLoader
+RoundConfig round1 = configLoader.getRoundConfig(RoundConfig.class, "round1");
 
 // Save changes
 configLoader.saveConfig(MyConfig.class); // Singleton
-configLoader.saveConfig(RoundConfig.class, new File(getDataFolder(), "rounds/round1").toPath()); // Specific instance
+configLoader.saveRoundConfig(RoundConfig.class, "round1"); // Specific instance
 ```
