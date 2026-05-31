@@ -127,14 +127,20 @@ public class MyConfigLoader extends AbstractConfigLoader {
         );
     }
 
-    // You can create utility methods to simplify access to specific AbstractConfig instances
+    // You can create utility methods to simplify access to specific AbstractConfig instances.
+    // This is useful if you don't want make getter every time you create new file for your round folder.
     public <T extends AbstractConfig> T getRoundConfig(Class<T> clazz, String roundId) {
         return getConfig(clazz, new File(plugin.getDataFolder(), "rounds/" + roundId).toPath());
     }
 
-    // Another example, make save round configs without specifying the path (just the roundId)
-    public void saveRoundConfig(Class<? extends AbstractConfig> clazz, String roundId) {
-        saveConfig(clazz, new File(plugin.getDataFolder(), "rounds/" + roundId).toPath());
+    // Or you can make getters specific to file names (depends on your needs).
+    // But in this case you need to create a new method every time you add a new file.
+    public <T extends AbstractConfig> T getRoundConfig(String roundId) {
+        return getConfig(RoundConfig.class, new File(plugin.getDataFolder(), "rounds/" + roundId).toPath());
+    }
+
+    public <T extends AbstractConfig> T getRoundMessages(String roundId) {
+        return getConfig(RoundMessages.class, new File(plugin.getDataFolder(), "rounds/" + roundId).toPath());
     }
     
 }
@@ -163,9 +169,9 @@ public class MyPlugin extends JavaPlugin {
 MyConfig config = configLoader.getConfig(MyConfig.class);
 
 // Access specific instance of AbstractConfig by using our utility method in configLoader
-RoundConfig round1 = configLoader.getRoundConfig(RoundConfig.class, "round1");
+RoundConfig round1Config = configLoader.getRoundConfig(RoundConfig.class, "round1");
+RoundMessages round1Messages = configLoader.getRoundConfig(RoundMessages.class, "round1");
 
 // Save changes
 configLoader.saveConfig(MyConfig.class); // Singleton
-configLoader.saveRoundConfig(RoundConfig.class, "round1"); // Specific instance
 ```
