@@ -68,41 +68,6 @@ public abstract class AbstractConfig {
     }
 
     /**
-     * Creates a {@link DynamicLocation} object with default coordinates (0,0,0).
-     *
-     * @return {@link DynamicLocation} object
-     */
-    protected DynamicLocation getDynamicLocation() {
-        return getDynamicLocation(0, 0, 0, 0, 0);
-    }
-
-    /**
-     * Creates a {@link DynamicLocation} object with the given coordinates.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param z Z coordinate
-     * @return {@link DynamicLocation} object
-     */
-    protected DynamicLocation getDynamicLocation(double x, double y, double z) {
-        return getDynamicLocation(x, y, z, 0, 0);
-    }
-
-    /**
-     * Creates a {@link DynamicLocation} object with the given coordinates and rotation.
-     *
-     * @param x     X coordinate
-     * @param y     Y coordinate
-     * @param z     Z coordinate
-     * @param yaw   horizontal rotation
-     * @param pitch vertical rotation
-     * @return {@link DynamicLocation} object
-     */
-    protected DynamicLocation getDynamicLocation(double x, double y, double z, float yaw, float pitch) {
-        return new DynamicLocation(x, y, z, yaw, pitch);
-    }
-
-    /**
      * Creates a {@link Title} object from the given components.
      *
      * @param title    title
