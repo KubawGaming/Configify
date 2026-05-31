@@ -1,7 +1,6 @@
 # Configify
 [![Version](https://jitpack.io/v/KubawGaming/Configify.svg)](https://jitpack.io/#KubawGaming/Configify)
 [![Java](https://img.shields.io/badge/Java-17+-orange.svg)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-[![Paper](https://img.shields.io/badge/Paper-1.17+-green.svg)](https://papermc.io/)
 
 Minimalist Spigot/Paper configuration library powered by ConfigLib.
 
